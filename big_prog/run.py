@@ -15,7 +15,7 @@ async def shutdown(dispatcher: Dispatcher):
 
 async def main():
     load_dotenv()
-    bot = Bot(token=os.getenv('TOKEN'))
+    bot = Bot(token='TOKEN')
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
