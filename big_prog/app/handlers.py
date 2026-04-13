@@ -219,9 +219,11 @@ async def cmd_show_my_courses(callback: CallbackQuery):
     user_id = callback.from_user.id
     courses = await get_my_courses(user_id)
     if not courses:
-        await callback.answer("Вы ещё не записаны ни на один курс.", show_alert=True)
-        await callback.message.edit_text("📭 У вас пока нет записанных курсов.\nВыберите курс в каталоге.")
-        return
+    back_kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="lk")]
+    ])
+    await callback.message.edit_text("📭 У вас пока нет записанных курсов.", reply_markup=back_kb)
+    return
 
     text = "📚 <b>Ваши курсы:</b>\n\n"   # или оставьте просто заголовок
     keyboard_buttons = []
@@ -257,7 +259,7 @@ async def cmd_info_my_course(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith('del_my_course_'))
 async def cmd_del_my_course(callback: CallbackQuery):
-    course_id = int(callback.data.split('_')[1])
+    course_id = int(callback.data.split('_')[3])
     user_id = int(callback.from_user.id)
 
     del_course = await del_my_course(user_id, course_id)
