@@ -219,11 +219,11 @@ async def cmd_show_my_courses(callback: CallbackQuery):
     user_id = callback.from_user.id
     courses = await get_my_courses(user_id)
     if not courses:
-    back_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🔙 Назад", callback_data="lk")]
-    ])
-    await callback.message.edit_text("📭 У вас пока нет записанных курсов.", reply_markup=back_kb)
-    return
+        back_kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🔙 Назад", callback_data="lk")]
+        ])
+        await callback.message.edit_text("📭 У вас пока нет записанных курсов.", reply_markup=back_kb)
+        return
 
     text = "📚 <b>Ваши курсы:</b>\n\n"   # или оставьте просто заголовок
     keyboard_buttons = []
