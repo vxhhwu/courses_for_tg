@@ -27,11 +27,6 @@ CATEGORY_NAMES = {
     'programming': 'Программирование'
 }
 
-@router.message(CommandStart)
-async def cmd_hi(message: Message):
-    await message.reply(f'Привет, {message.from_user.first_name}!\nЯ - бот для подбора курса по твоему запросу\n/reg Для регистрации')
-    await message.answer('Меню', reply_markup = kb.inline_main)
-
 @router.message(Command('reg'))
 async def cmd_reg(message: Message, state: FSMContext):
     if await user_exists(message.from_user.id):
@@ -39,7 +34,12 @@ async def cmd_reg(message: Message, state: FSMContext):
         return
     await state.set_state(Reg.first_name)
     await message.answer('Отправьте своё имя')
-
+    
+@router.message(CommandStart)
+async def cmd_hi(message: Message):
+    await message.reply(f'Привет, {message.from_user.first_name}!\nЯ - бот для подбора курса по твоему запросу\n/reg Для регистрации')
+    await message.answer('Меню', reply_markup = kb.inline_main)
+    
 @router.message(Reg.first_name)
 async def cmd_reg_first_name(message: Message, state: FSMContext):
     if not message.text:
