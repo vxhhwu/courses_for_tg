@@ -73,9 +73,16 @@ async def cmd_reg_age(message: Message, state: FSMContext):
         last_name=data["last_name"],
         age=age
     )
-
-    await message.answer(f'Ваш профиль:\nИмя: {data["first_name"]}\nФамилия: {data["last_name"]}\nВозраст: {data["age"]}')
+    kb_menu = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='В Меню', callback_data='back_to_menu')]
+    ])
+    await message.answer(f'Ваш профиль:\nИмя: {data["first_name"]}\nФамилия: {data["last_name"]}\nВозраст: {data["age"]}', reply_markup=kb_menu)
     await state.clear()
+
+@router.callback_query(F.data == 'back_to_menu')
+async def cmd_back(callback: CallbackQuery):
+    callback.answer('Меню')
+    callback.message.edit_text('Меню', reply_markup=kb.inline_main)
 
 @router.message(Command('adm_dc'))
 async def cmd_delete_course(message: Message):
